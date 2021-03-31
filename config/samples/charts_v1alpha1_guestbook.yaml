@@ -1,0 +1,265 @@
+apiVersion: charts.my.domain/v1alpha1
+kind: Guestbook
+metadata:
+  name: guestbook-sample
+  namespace: guestbook-operator-system
+spec:
+  # Default values copied from <project_dir>/helm-charts/guestbook/values.yaml
+  affinity: {}
+  autoscaling:
+    enabled: false
+    maxReplicas: 100
+    minReplicas: 1
+    targetCPUUtilizationPercentage: 80
+  fullnameOverride: ""
+  image:
+    pullPolicy: IfNotPresent
+    repository: gcr.io/google-samples/gb-frontend
+    tag: ""
+  imagePullSecrets: []
+  ingress:
+    annotations: {}
+    enabled: false
+    hosts:
+    - host: chart-example.local
+      paths: []
+    tls: []
+  nameOverride: ""
+  nodeSelector: {}
+  podAnnotations: {}
+  podSecurityContext: {}
+  redis:
+    cluster:
+      enabled: true
+      slaveCount: 2
+    clusterDomain: cluster.local
+    configmap: appendonly no
+    containerSecurityContext:
+      enabled: true
+      runAsUser: 1001
+    fullnameOverride: redis
+    global:
+      redis: {}
+    image:
+      pullPolicy: IfNotPresent
+      registry: docker.io
+      repository: bitnami/redis
+      tag: 6.0.9-debian-10-r38
+    master:
+      affinity: {}
+      command: /run.sh
+      customLivenessProbe: {}
+      customReadinessProbe: {}
+      disableCommands:
+      - FLUSHDB
+      - FLUSHALL
+      extraEnvVars: []
+      extraEnvVarsCM: []
+      extraEnvVarsSecret: []
+      extraFlags: []
+      livenessProbe:
+        enabled: true
+        failureThreshold: 5
+        initialDelaySeconds: 5
+        periodSeconds: 5
+        successThreshold: 1
+        timeoutSeconds: 5
+      persistence:
+        accessModes:
+        - ReadWriteOnce
+        enabled: true
+        matchExpressions: {}
+        matchLabels: {}
+        path: /data
+        size: 8Gi
+        subPath: ""
+      podAnnotations: {}
+      podLabels: {}
+      preExecCmds: ""
+      priorityClassName: ""
+      readinessProbe:
+        enabled: true
+        failureThreshold: 5
+        initialDelaySeconds: 5
+        periodSeconds: 5
+        successThreshold: 1
+        timeoutSeconds: 1
+      service:
+        annotations: {}
+        labels: {}
+        port: 6379
+        type: ClusterIP
+      shareProcessNamespace: false
+      statefulset:
+        annotations: {}
+        labels: {}
+        updateStrategy: RollingUpdate
+    metrics:
+      enabled: false
+      image:
+        pullPolicy: IfNotPresent
+        registry: docker.io
+        repository: bitnami/redis-exporter
+        tag: 1.13.1-debian-10-r32
+      podAnnotations:
+        prometheus.io/port: "9121"
+        prometheus.io/scrape: "true"
+      prometheusRule:
+        additionalLabels: {}
+        enabled: false
+        namespace: ""
+        rules: []
+      service:
+        annotations: {}
+        labels: {}
+        type: ClusterIP
+      serviceMonitor:
+        enabled: false
+        selector:
+          prometheus: kube-prometheus
+    networkPolicy:
+      enabled: false
+      ingressNSMatchLabels: {}
+      ingressNSPodMatchLabels: {}
+    password: ""
+    persistence: {}
+    podDisruptionBudget:
+      enabled: false
+      minAvailable: 1
+    podSecurityPolicy:
+      create: false
+    rbac:
+      create: false
+      role:
+        rules: []
+    redisPort: 6379
+    securityContext:
+      enabled: true
+      fsGroup: 1001
+    sentinel:
+      customLivenessProbe: {}
+      customReadinessProbe: {}
+      downAfterMilliseconds: 60000
+      enabled: false
+      failoverTimeout: 18000
+      image:
+        pullPolicy: IfNotPresent
+        registry: docker.io
+        repository: bitnami/redis-sentinel
+        tag: 6.0.9-debian-10-r38
+      initialCheckTimeout: 5
+      livenessProbe:
+        enabled: true
+        failureThreshold: 5
+        initialDelaySeconds: 5
+        periodSeconds: 5
+        successThreshold: 1
+        timeoutSeconds: 5
+      masterSet: mymaster
+      parallelSyncs: 1
+      port: 26379
+      quorum: 2
+      readinessProbe:
+        enabled: true
+        failureThreshold: 5
+        initialDelaySeconds: 5
+        periodSeconds: 5
+        successThreshold: 1
+        timeoutSeconds: 1
+      service:
+        annotations: {}
+        labels: {}
+        redisPort: 6379
+        sentinelPort: 26379
+        type: ClusterIP
+      staticID: false
+      usePassword: true
+    serviceAccount:
+      create: false
+    slave:
+      affinity: {}
+      command: /run.sh
+      customLivenessProbe: {}
+      customReadinessProbe: {}
+      disableCommands:
+      - FLUSHDB
+      - FLUSHALL
+      extraEnvVars: []
+      extraEnvVarsCM: []
+      extraEnvVarsSecret: []
+      extraFlags: []
+      livenessProbe:
+        enabled: true
+        failureThreshold: 5
+        initialDelaySeconds: 30
+        periodSeconds: 10
+        successThreshold: 1
+        timeoutSeconds: 5
+      persistence:
+        accessModes:
+        - ReadWriteOnce
+        enabled: true
+        matchExpressions: {}
+        matchLabels: {}
+        path: /data
+        size: 8Gi
+        subPath: ""
+      podAnnotations: {}
+      podLabels: {}
+      port: 6379
+      preExecCmds: ""
+      readinessProbe:
+        enabled: true
+        failureThreshold: 5
+        initialDelaySeconds: 5
+        periodSeconds: 10
+        successThreshold: 1
+        timeoutSeconds: 10
+      service:
+        annotations: {}
+        labels: {}
+        port: 6379
+        type: ClusterIP
+      shareProcessNamespace: false
+      spreadConstraints: {}
+      statefulset:
+        annotations: {}
+        labels: {}
+        updateStrategy: RollingUpdate
+    sysctlImage:
+      command: []
+      enabled: false
+      mountHostSys: false
+      pullPolicy: Always
+      registry: docker.io
+      repository: bitnami/minideb
+      resources: {}
+      tag: buster
+    tls:
+      authClients: true
+      enabled: false
+    usePassword: false
+    usePasswordFile: false
+    volumePermissions:
+      enabled: false
+      image:
+        pullPolicy: Always
+        registry: docker.io
+        repository: bitnami/minideb
+        tag: buster
+      resources: {}
+      securityContext:
+        runAsUser: 0
+  replicaCount: 2
+  resources: {}
+  securityContext: {}
+  service:
+    port: 80
+    type: NodePort
+  serviceAccount:
+    annotations: {}
+    create: true
+    name: ""
+  tolerations: []
+  
+  
